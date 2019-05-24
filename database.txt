@@ -1,0 +1,85 @@
+﻿drop database HomeStayDB
+create database HomeStayDB character set utf8 collate utf8_general_ci ;
+
+use HomeStayDB;
+
+create table Users(
+	id int  auto_increment primary key,
+	userName varchar(50),
+	password varchar(255), 
+	roleName varchar(10),
+	status varchar(30);
+);
+select * from users;
+create table ChuNha(
+ id int primary key,
+ hoTen varchar(50) not null,
+ sdt varchar(50),
+ cmnd varchar(50) ,
+ email varchar(25) ,
+ diaChi varchar(50),
+ tenHomestay varchar(100),
+ foreign key (id) references Users(id) 
+);
+	
+create table Phong (
+ id int auto_increment primary key,
+ maPhong varchar(50),
+ lPhong varchar(15),
+ dTich int ,
+ diaChi varchar(50) , 
+ diaDiem varchar(20),
+ giaPhong int,
+ tTrang varchar(50),
+ idChu int,
+ foreign key (idChu) references ChuNha(id)
+);
+
+create table ThongTinPhong(
+ id int primary key,
+ cLuong varchar(50) ,
+ slNguoiO int ,
+ nguoiO varchar(50),
+ giuong varchar(50),
+ thueTu date,
+ thueDen date,
+ moTa text,	
+ foreign key (id) references Phong(id)
+);
+
+Alter table ThongTinPhong drop giaPhong;
+Alter table Phong add giaPhong int after diaDiem;
+create table HinhAnh(
+	id int auto_increment primary key,
+    name varchar(255),
+    urlHinh longblob,
+    idPhong int,	
+	foreign key (idPhong) references Phong(id)
+);
+
+create table PhongDat(
+ idPD int auto_increment primary key , 
+ idPhong int,
+ ngayDat date,
+ ngayNhan date ,
+ slNgLon int ,
+ slTreEm int,
+ tenNguoiNhan varchar(30),
+ sdt varchar(50),
+ cmnd varchar(15),
+ foreign key (idPhong) references Phong(id)
+);
+
+create table DichVu(
+ id int auto_increment primary key,
+ tenDV varchar(50),
+ idPhong int,
+ foreign key (idPhong) references Phong(id)
+);
+select * from thongtinphong
+drop table HinhAnh
+Select count(id) from Phong where diaDiem like'hội an' and giaPhong <= 450000 and tTrang = 'Còn trống' 
+update Phong set giaPhong = 500000 where id = 6
+Select * from Users where userName<> 'admin' and status <> 'Disable'
+
+select DISTINCT idPhong,name from HinhAnh 
